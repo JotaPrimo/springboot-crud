@@ -2,7 +2,6 @@ package com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos;
 
 import com.jotasantos.springbootcrud.springbootcrud.core.entities.Produto;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
 
 public record ProdutoCreateDTO(
 

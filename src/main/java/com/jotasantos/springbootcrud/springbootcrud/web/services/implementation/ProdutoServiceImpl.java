@@ -5,7 +5,9 @@ import com.jotasantos.springbootcrud.springbootcrud.exceptions.EntityNotFoundExc
 import com.jotasantos.springbootcrud.springbootcrud.repositories.IProdutoRepository;
 import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoCreateDTO;
 import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoResponseDTO;
+import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoUpdateDTO;
 import com.jotasantos.springbootcrud.springbootcrud.web.services.interfaces.IProdutoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,17 +39,38 @@ public class ProdutoServiceImpl implements IProdutoService {
     }
 
     @Override
-    public ProdutoResponseDTO save(ProdutoCreateDTO produto) {
-        return null;
+    @Transactional
+    public ProdutoResponseDTO save(ProdutoCreateDTO produtoCreateDTO) {
+        Produto produto = ProdutoCreateDTO.from(produtoCreateDTO);
+        Produto produtoSaved = produtoRepository.save(produto);
+        return ProdutoResponseDTO.from(produtoSaved);
     }
 
     @Override
     public void delete(Long id) {
-
+        Produto produtoDelete = this.findByIdOrThrow(id);
+        produtoRepository.delete(produtoDelete);
     }
 
     @Override
     public boolean existsById(Long id) {
         return false;
     }
+
+    @Override
+    @Transactional
+    public ProdutoResponseDTO update(Long id, ProdutoUpdateDTO produtoUpdateDTO) {
+        Produto produto = this.findByIdOrThrow(id);
+        Produto produtoUpdate = ProdutoUpdateDTO.entityFromDTO(produto, produtoUpdateDTO);
+        Produto produtoSaved = produtoRepository.save(produtoUpdate);
+        return ProdutoResponseDTO.from(produtoSaved);
+    }
+
+    @Override
+    public Produto findByIdOrThrow(Long id) throws EntityNotFoundException {
+        return this.produtoRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Registro não encontrado {%s}", id)));
+    }
+
 }

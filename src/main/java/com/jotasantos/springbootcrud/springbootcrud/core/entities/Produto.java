@@ -23,6 +23,7 @@ public class Produto {
     @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+
     public Produto() {
     }
 
@@ -90,4 +91,5 @@ public class Produto {
                 ", preco=" + preco +
                 '}';
     }
+
 }
