@@ -2,7 +2,9 @@ package com.jotasantos.springbootcrud.springbootcrud.core.entities;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,13 +19,22 @@ public class Produto {
 
     private Double preco;
 
+    @CreationTimestamp
+    @Column(name="created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     public Produto() {
     }
 
-    public Produto(Long id, String descricao, Double preco) {
-        this.id = id;
+    public Produto(String descricao, Double preco) {
         this.descricao = descricao;
         this.preco = preco;
+    }
+
+    public Produto(String descricao, Double preco, LocalDateTime createdAt) {
+        this.descricao = descricao;
+        this.preco = preco;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -48,6 +59,14 @@ public class Produto {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
