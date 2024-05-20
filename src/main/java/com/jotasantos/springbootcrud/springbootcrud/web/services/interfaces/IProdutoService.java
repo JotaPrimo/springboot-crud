@@ -1,19 +1,27 @@
 package com.jotasantos.springbootcrud.springbootcrud.web.services.interfaces;
 
 import com.jotasantos.springbootcrud.springbootcrud.core.entities.Produto;
+import com.jotasantos.springbootcrud.springbootcrud.exceptions.EntityNotFoundException;
+import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoCreateDTO;
+import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoResponseDTO;
+import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoUpdateDTO;
 
 import java.util.List;
 
 public interface IProdutoService {
 
-    List<Produto> findAll();
+    List<ProdutoResponseDTO> findAll();
 
-    Produto findById(Long id);
+    ProdutoResponseDTO findById(Long id) throws EntityNotFoundException;
 
-    Produto save(Produto produto);
+    ProdutoResponseDTO save(ProdutoCreateDTO produto);
 
-    void delete(Long id);
+    void delete(Long id) throws EntityNotFoundException;
 
     boolean existsById(Long id);
+
+    ProdutoResponseDTO update(Long id, ProdutoUpdateDTO produto);
+
+    Produto findByIdOrThrow(Long id) throws EntityNotFoundException;
 
 }
