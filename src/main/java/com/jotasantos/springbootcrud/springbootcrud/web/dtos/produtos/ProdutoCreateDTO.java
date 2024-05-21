@@ -3,6 +3,8 @@ package com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos;
 import com.jotasantos.springbootcrud.springbootcrud.core.entities.Produto;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDateTime;
+
 public record ProdutoCreateDTO(
 
         @NotBlank(message = "Informe a descrição do produto")
@@ -16,6 +18,6 @@ public record ProdutoCreateDTO(
         Double preco) {
 
         public static Produto from(ProdutoCreateDTO produtoCreateDTO) {
-                return new Produto(produtoCreateDTO.descricao(), produtoCreateDTO.preco());
+                return new Produto(produtoCreateDTO.descricao(), produtoCreateDTO.preco(), LocalDateTime.now());
         }
 }

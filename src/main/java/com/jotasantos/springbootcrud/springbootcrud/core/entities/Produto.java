@@ -3,6 +3,7 @@ package com.jotasantos.springbootcrud.springbootcrud.core.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -23,6 +24,9 @@ public class Produto {
     @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    @Column(name="updated_at", nullable = false, updatable = true)
+    private LocalDateTime updatedAt;
 
     public Produto() {
     }
@@ -68,6 +72,14 @@ public class Produto {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

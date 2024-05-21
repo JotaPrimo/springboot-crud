@@ -1,4 +1,4 @@
-package com.jotasantos.springbootcrud.springbootcrud.web.services.interfaces;
+package com.jotasantos.springbootcrud.springbootcrud.services.interfaces;
 
 import com.jotasantos.springbootcrud.springbootcrud.core.entities.Produto;
 import com.jotasantos.springbootcrud.springbootcrud.exceptions.EntityNotFoundException;

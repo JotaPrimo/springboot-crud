@@ -1,4 +1,4 @@
-package com.jotasantos.springbootcrud.springbootcrud.web.services.implementation;
+package com.jotasantos.springbootcrud.springbootcrud.services.implementation;
 
 import com.jotasantos.springbootcrud.springbootcrud.core.entities.Produto;
 import com.jotasantos.springbootcrud.springbootcrud.exceptions.EntityNotFoundException;
@@ -6,10 +6,11 @@ import com.jotasantos.springbootcrud.springbootcrud.repositories.IProdutoReposit
 import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoCreateDTO;
 import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoResponseDTO;
 import com.jotasantos.springbootcrud.springbootcrud.web.dtos.produtos.ProdutoUpdateDTO;
-import com.jotasantos.springbootcrud.springbootcrud.web.services.interfaces.IProdutoService;
-import jakarta.transaction.Transactional;
+import com.jotasantos.springbootcrud.springbootcrud.services.interfaces.IProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class ProdutoServiceImpl implements IProdutoService {
 
     @Override
     public List<ProdutoResponseDTO> findAll() {
-        List<Produto> produtos = produtoRepository.findAll();
+        List<Produto> produtos = this.findAllSortedById();
         return ProdutoResponseDTO.toListDTO(produtos);
     }
 
@@ -47,14 +48,10 @@ public class ProdutoServiceImpl implements IProdutoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Produto produtoDelete = this.findByIdOrThrow(id);
         produtoRepository.delete(produtoDelete);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return false;
     }
 
     @Override
@@ -70,7 +67,16 @@ public class ProdutoServiceImpl implements IProdutoService {
     public Produto findByIdOrThrow(Long id) throws EntityNotFoundException {
         return this.produtoRepository
                 .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Registro não encontrado {%s}", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Registro não encontrado %s", id)));
+    }
+
+    public List<Produto> findAllSortedById() {
+        return this.produtoRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return false;
     }
 
 }
